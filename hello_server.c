@@ -9,7 +9,6 @@ void error_handling(char* message);
 
 int main(int argc, char* argv[])
 {
-	printf("hello server start");
 	int serv_sock;
 	int clnt_sock;
 	
@@ -26,7 +25,6 @@ int main(int argc, char* argv[])
 	}
 	
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);
-	printf("socket create ok");
 	if(serv_sock == -1)
 		error_handling("socket() error");
 
@@ -35,7 +33,7 @@ int main(int argc, char* argv[])
 	serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serv_addr.sin_port = htons(atoi(argv[1]));
 
-	if(bind(serv_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1)
+	if(bind(serv_sock, (struct sockaddr*) &serv_addr, sizeof(serv_addr)))
 		error_handling("bind() error");
 
 	if(listen(serv_sock, 5) == -1)
@@ -46,7 +44,7 @@ int main(int argc, char* argv[])
 	if(clnt_sock == -1)
 		error_handling("accpet() error");
 
-	write(clnt_sock, message, sizeof(message));
+	write(clnt_sock, message, sizeof(message)-1);
 	close(clnt_sock);
 	close(serv_sock);
 	return 0;
