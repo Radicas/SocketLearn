@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_addr.s_addr = inet_addr(argv[1]);
 	serv_addr.sin_port = htons(atoi(argv[2]));
-	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))== -1)
+	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr))== -1)	//调用connect()时，内核会自动分配ip和端口，用于通信	
 		error_handling("connect() error");
 	
 	str_len = read(sock, message, sizeof(message)-1);
