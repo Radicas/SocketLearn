@@ -8,21 +8,17 @@ void error_handling(char* message);
 int main()
 {
 	int fd;
+	int write_len;
 	char buf[] = "Let's go";
 	
 	fd = open("data.txt",O_CREAT|O_WRONLY|O_TRUNC);
-	if(fd==-1)
-	{
+	if(fd == -1)
 		error_handling("open() error");
-	}
-	
 	printf("file descriptor: %d \n",fd);
-
-	if(write(fd, buf, sizeof(buf)) == -1)
-	{
+	write_len = write(fd, buf, sizeof(buf));
+	
+	if(write_len == -1)
 		error_handling("write() error");
-	}
-
 	close(fd);
 	return 0;
 }

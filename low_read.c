@@ -9,16 +9,17 @@ void error_handling(char* message);
 int main()
 {
 	int fd;
+	int data_len;
 	char buf[BUF_SIZE];
 	
 	fd = open("data.txt", O_RDONLY);
 	printf("file descriptor: %d \n", fd);
+	data_len = read(fd, buf, sizeof(buf));
 	
-	if(read(fd, buf, sizeof(buf)) == -1)
-	{
+	if(data_len == -1)
 		error_handling("read() error");
-	}
 	
+	printf("read() return : %d \n", data_len);
 	printf("data is: %s", buf);
 	close(fd);
 	return 0;
