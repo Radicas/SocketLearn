@@ -6,17 +6,19 @@
 #include <sys/socket.h>
 
 #define BUF_SIZE 1024
+#define TRUE 1
+#define FALSE 0
 void error_handling(char* message);
 
 int main(int argc, char* argv[])
 {
 	int serv_sock;	//socket描述符
 	int clnt_sock;
-	int str_len, i;
+	int str_len, option, i;
 	char message[BUF_SIZE];
 	struct sockaddr_in serv_addr;	//sockaddr_in 结构体
 	struct sockaddr_in clnt_addr;
-	socklen_t clnt_addr_size;
+	socklen_t clnt_addr_size, optlen;
 	
 	if(argc!=2)
 	{
@@ -27,6 +29,12 @@ int main(int argc, char* argv[])
 	serv_sock = socket(PF_INET, SOCK_STREAM, 0);	//创建server套接字，还不是服务器socket
 	if(serv_sock == -1)
 		error_handling("socket() error");
+/*
+使用SO_REUSEADDR套接字选项，可以在time-wait状态下使用端口号
+*/
+	optlen = sizeof(option);	
+	option = TRUE;
+	setsockopt(serv_sock, SOL_SOCKET, SO_REUSEADDR, (void*)&option, optlen);
 
 	memset(&serv_addr, 0, sizeof(serv_addr));	//init struct sockaddr_in
 	serv_addr.sin_family = AF_INET;
