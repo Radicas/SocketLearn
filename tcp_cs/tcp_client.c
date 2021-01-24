@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 	if(connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1)	//发起connect
 		error_handling("connect() error");
 	
-	while(read_len=read(sock, &message[index++], 1))	//读取server发来的消息
+	while((read_len=read(sock, &message[index++], 1))!=0)	//读取server发来的消息
 	{
 		if(read_len == -1)
 			error_handling("read() error");
